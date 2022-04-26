@@ -13,7 +13,7 @@ const blogSchema = new mongoose.Schema(
         }, 
         authorId: {
             type:ObjectId,
-            ref:author,
+            ref:"author",
             required: true,
             }, 
         tags: {
@@ -32,7 +32,7 @@ const blogSchema = new mongoose.Schema(
         },
         isDeleted: {
             default:false,
-            type:boolean,
+            type:Boolean,
         },
         publishedAt: {
             type: Date,
@@ -40,8 +40,8 @@ const blogSchema = new mongoose.Schema(
         }, 
         isPublished: {
             default:false,
-            type:boolean,
+            type:Boolean,
         }
 } ,{timestamps:true})
 
-module.exports.blogSchema = mongoose.module("blog", blogSchema)
+module.exports = mongoose.model("blog", blogSchema)
