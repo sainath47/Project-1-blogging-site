@@ -5,7 +5,7 @@ const blogController = require("../Controller/blogController")
 
 router.post("/createAuthor",authorController.createAuthor)
 router.post("/createBlog",blogController.createBlog)
-// router.post("/createBlog1",blogController.createBlog1)
+router.get("/blogs",blogController.GetFilteredBlog)
 
 
 

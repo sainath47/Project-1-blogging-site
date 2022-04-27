@@ -11,8 +11,8 @@ const blogModel = require("../models/blogModel");
 const createBlog = async function (req, res) {
 
   try {
-    console.log(req.body)
-    if (req.body) {
+   let data= req.body
+    if (Object.keys(data).length != 0) {
 
         let authorId = req.body.authorId;
         if(!authorId) return res.send({msg:"authorId is required"})
@@ -32,11 +32,20 @@ const createBlog = async function (req, res) {
 };
 
 
-const filterBlogs= async function(req,res){
-
-    let data = await blogModel.find($and[{isDeleted:false},{published:true}])
+const GetFilteredBlog= async function(req,res){
+    let data = await blogModel.find({$and:[{isDeleted:false},{isPublished:true}]})
+    // console.log(data)
     res.send({msg:data})
 }
+
+
+
+// $and
+// $in
+// $or
+// $gte
+// $gt
+
 
 
 // const createBlog1 = async function (req, res) {
@@ -59,4 +68,5 @@ const filterBlogs= async function(req,res){
 // };
 
 module.exports.createBlog = createBlog;
+module.exports.GetFilteredBlog = GetFilteredBlog;
 // module.exports.createBlog1 = createBlog1;
