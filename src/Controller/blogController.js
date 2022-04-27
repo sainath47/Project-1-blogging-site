@@ -35,6 +35,8 @@ const createBlog = async function (req, res) {
 const GetFilteredBlog = async function (req, res) {
   let data = await blogModel.find({ $and: [{ isDeleted: false }, { isPublished: true }] })
   try {
+
+    
     if (!data) {
       let authId = req.query.authorId
       let cat = req.query.category
@@ -55,12 +57,13 @@ const GetFilteredBlog = async function (req, res) {
 
 
 
+
+
 // $and
 // $in
 // $or
 // $gte
 // $gt
-
 
 
 // const createBlog1 = async function (req, res) {
