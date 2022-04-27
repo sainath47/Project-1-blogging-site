@@ -10,7 +10,7 @@ lname: {type: String,
     required: true,
 }, 
 title: {type: String, 
-    enum:["Mr", "Mrs"," Miss"]
+    enum:["Mr", "Mrs","Miss"]
 },
  email: {type:String,
     required:true ,
