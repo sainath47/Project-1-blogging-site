@@ -11,13 +11,13 @@ const blogModel = require("../models/blogModel");
 const createBlog = async function (req, res) {
 
   try {
-   let data= req.body
+    let data = req.body
     if (Object.keys(data).length != 0) {
 
-        let authorId = req.body.authorId;
-        if(!authorId) return res.send({msg:"authorId is required"})
-        let validationAuthorId = await authorModel.findById(authorId);
-        if (!validationAuthorId) return res.send({ msg: "enter valid authorId" });
+      let authorId = req.body.authorId;
+      if (!authorId) return res.send({ msg: "authorId is required" })
+      let validationAuthorId = await authorModel.findById(authorId);
+      if (!validationAuthorId) return res.send({ msg: "enter valid authorId" });
 
       let blog = req.body;
       let blogCreated = await blogModel.create(blog);
@@ -32,10 +32,23 @@ const createBlog = async function (req, res) {
 };
 
 
-const GetFilteredBlog= async function(req,res){
-    let data = await blogModel.find({$and:[{isDeleted:false},{isPublished:true}]})
-    // console.log(data)
-    res.send({msg:data})
+const GetFilteredBlog = async function (req, res) {
+  let data = await blogModel.find({ $and: [{ isDeleted: false }, { isPublished: true }] })
+  try {
+    if (!data) {
+      let authId = req.query.authorId
+      let cat = req.query.category
+      let subcat = req.query.subcategory
+      let tag = req.query.tags
+      let allData = await blogModel.find({ $or: [{ authorId: authId }, { category: cat }, { subcategory: subcat }, { tags: tag }] })
+      console.log(allData);
+      res.send({ status: true, msg: allData })
+    } else {
+      return res.status(404).send({ msg: "Not Found" });
+    }
+  } catch (err) {
+    res.status(500).send({ status: false, msg: "Error", err: err.message })
+  }
 }
 
 
