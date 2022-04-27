@@ -107,7 +107,8 @@ const DeleteBlogById = async function (req, res) {
 
     let DeletedBlog = await blogModel.findOneAndUpdate(
       { _id: blogId },
-      { isDeleted: false },
+      { isDeleted:true,deletedAt:new Date() },
+      
       { new: true }
     );
 
@@ -136,7 +137,7 @@ const DeleteBlogByQuery = async function (req, res) {
           { tags: tag },
         ],
       },
-      { isDeleted: true },
+      { isDeleted: true ,deletedAt: new Date()},
       { new: true }
     );
     if(!deletedBlogs) return res.status(404).send({msg:"enter valid queries"})
