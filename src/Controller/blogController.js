@@ -36,7 +36,9 @@ const GetFilteredBlog = async function (req, res) {
       let subcat = req.query.subcategory
       let tag = req.query.tags
       let allData = await blogModel.find({ $or: [{ authorId: authId }, { category: cat }, { subcategory: subcat }, { tags: tag }] })
-      console.log(allData);
+      if (allData.length!=0) return res.status(400).send({msg:"enter valid queries"})
+      // console.log(allData);
+
       res.send({ status: true, msg: allData })
     } else {
       return res.status(404).send({ msg: "Not Found" });
