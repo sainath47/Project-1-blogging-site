@@ -1,6 +1,9 @@
 const authorModel = require("../models/authorModel");
 const blogModel = require("../models/blogModel");
 
+
+
+//===============POST/blogs====================
 const createBlog = async function (req, res) {
   try {
     let data = req.body;
@@ -21,6 +24,8 @@ const createBlog = async function (req, res) {
     res.status(500).send({ msg: "server error", error: err.message });
   }
 };
+
+//============GET/blogs===========
 
 const GetFilteredBlog = async function (req, res) {
   let data = await blogModel.find({
@@ -54,7 +59,7 @@ const GetFilteredBlog = async function (req, res) {
 };
 
 
-//=============== PUT /blogs/:blogId===========
+//=============== PUT/blogs/:blogId===========
 
 const updateBlog = async function (req, res) {
   try {
@@ -96,14 +101,14 @@ const updateBlog = async function (req, res) {
   }
 };
 
+//=============DELETE/blogs/:blogId======================
+
 const DeleteBlogById = async function (req, res) {
   try {
     const blogId = req.params.blogId;
     if (!blogId) {
       return res.status(404).send({ status: false, msg: "Blog Id is needed in path params" });
     }
-
-
 
     let DeletedBlog = await blogModel.findOneAndUpdate(
       { _id: blogId },
@@ -119,6 +124,9 @@ const DeleteBlogById = async function (req, res) {
     res.status(500).send({ status: false, msg: "Error", err: err.message });
   }
 };
+
+
+//===============DELETE/blogs?qureyParams========================
 
 const DeleteBlogByQuery = async function (req, res) {
   try {
