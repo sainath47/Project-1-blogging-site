@@ -23,6 +23,8 @@ res.status(500).send({ msg: "server error", error: err.message });
 
 const loginAuthor = async function (req, res) {
     let email = req.body.email;
+
+    
     let password = req.body.password;
   try{
     let author = await AuthorModel.findOne({ email: email, password: password });
