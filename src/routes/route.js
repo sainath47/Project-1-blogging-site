@@ -16,7 +16,8 @@ router.delete("/blogs/:blogId",blogController.DeleteBlogById)
 
 router.delete("/blogs/delete",blogController.DeleteBlogByQuery)
 
-
+//-----------Phase_2,APIs----------------------------
+router.post("/login", authorController.loginAuthor)
 
 
 
