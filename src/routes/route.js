@@ -13,7 +13,7 @@ router.post("/createBlog",blogController.createBlog)
 
 router.get("/blogs/get",blogController.GetFilteredBlog)
 
-router.put("/blog/:blogId",authentication.authentication,blogController.updateBlog)
+router.put("/blog/:blogId/",authentication.authentication,blogController.updateBlog)
 
 router.delete("/blogs/:blogId/:authorId",authentication.authentication,authorisation.authorisation,blogController.DeleteBlogById)
 
