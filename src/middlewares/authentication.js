@@ -19,6 +19,27 @@ const authentication = async function(req, res, next) {
     next()
 }
 
+
+// const authValidation = async function (req, res,next) {
+//     let token = req.headers["x-api-key"];
+//     if (!token) token = req.headers["x-api-key"];
+//     let authorId = req.params.authorId
+  
+//     if(!authorId) return res.send({msg:"authorId is mandatory field"})
+  
+//     let author = await authorModel.findById(authorId);
+//     if (!author) return res.send("No such author exists"); 
+    
+//     if (!token) return res.send({ status: false, msg: "token must be present" });
+//     let decodedToken = jwt.verify(token, "RSPtechnologies-brillientCoders")
+//     if(!decodedToken) return res.send({ status: false, msg: "token is invalid"})
+//     if(decodedToken.userId !== userId) return res.send({msg:"you are not autherised for this process"})
+//   next()
+   
+//   };
+
+
+
 // router.delete("/blogs/delete",middleware.aurhorisation,blogController.DeleteBlogByQuery)
 
-module.exports= authentication
+module.exports.authentication= authentication

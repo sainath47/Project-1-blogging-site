@@ -26,10 +26,10 @@ const loginAuthor = async function (req, res) {
     let password = req.body.password;
   try{
     let author = await AuthorModel.findOne({ email: email, password: password });
-    if (!user)
+    if (!author)
           return res.status(400).send({
             status: false,
-            msg: "username or the password is not corerct",
+            msg: "email or the password is not corerct",
           });
 
           

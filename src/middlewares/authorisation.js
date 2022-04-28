@@ -10,10 +10,11 @@ const authorisation = function(req, res, next) {
     let decodedToken = jwt.verify(token, "RSPtechnologies-brillientCoders");
     if(!decodedToken) return res.status(401).send({ status: false, msg: "token is invalid"})
     let authorId= req.params.authorId
-    if(decodedToken.authorId !== authorId) return res.status(403).send({msg:"you are not autherised for this process"})
+    if(decodedToken.authorId != authorId) return res.status(403).send({msg:"you are not autherised for this process"})
 
+    
     next()
 }
 
 
-module.exports= authorisation
+module.exports.authorisation= authorisation
