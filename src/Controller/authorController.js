@@ -1,36 +1,61 @@
-// const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const AuthorModel= require("../models/authorModel")
 
 
 const createAuthor= async function (req, res) {
-    let author = req.body
+  try{
+    let data = req.body
+    if(Object.keys(data).length!=0){
+  let author = req.body
     let authorCreated = await AuthorModel.create(author)
-    res.send({data: authorCreated})
+    res.status(200).AuthorModelsend({status:true,data: authorCreated})
+  }
+else {
+  return res.status(400).send({ msg: "Bad request" });
+}
+} catch (err) {
+res.status(500).send({ msg: "server error", error: err.message });
+}
 }
 
-// const loginAuthor = async function (req, res) {
-//     let email = req.body.email;
-//     let password = req.body.password;
+
+
+
+const loginAuthor = async function (req, res) {
+    let email = req.body.email;
+    let password = req.body.password;
+  try{
+    let author = await AuthorModel.findOne({ email: email, password: password });
+    if (!user)
+          return res.status(400).send({
+            status: false,
+            msg: "username or the password is not corerct",
+          });
+
+          
+    let token = jwt.sign(
+      {
+        authorId: author._id.toString(),
+        batch: "brillientCoders",
+        organisation: "RSPtechnologies",
+      },
+      "RSPtechnologies-brillientCoders"
+    );
+    res.header("x-Api-Key", token);
+        res.status(200).send({ status: true, data: token });
+      
+    }
+    catch (err) {
+      res.status(500).send({ msg: "server error", error: err.message });
+      }
+    }
   
-//     let user = await AuthorModel.findOne({ email: email, password: password });
-//     if (!user)
-//       return res.send({
-//         status: false,
-//         msg: "username or the password is not corerct",
-//       });
-  
- 
-//     let token = jwt.sign(
-//       {
-//         userId: user._id.toString(),
-//         batch: "brillientCoders",
-//         organisation: "RSPtechnologies",
-//       },
-//       "RSPtechnologies-brillientCoders"
-//     );
-//     res.setHeader("x-auth-token", token);
-//     res.send({ status: true, data: token });
-//   };
+
+
+
+
+
+
   
 module.exports.createAuthor= createAuthor
-// module.exports.loginAuthor = loginAuthor
+module.exports.loginAuthor = loginAuthor
