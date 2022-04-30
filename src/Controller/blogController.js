@@ -1,6 +1,7 @@
+const mongoose = require('mongoose');
 const authorModel = require("../models/authorModel");
 const blogModel = require("../models/blogModel");
-
+const isValid = mongoose.Types.ObjectId.isValid
 
 
 
@@ -9,7 +10,7 @@ const createBlog = async function (req, res) {
   try {
     const data = req.body
     if(Object.keys(data).length == 0){
-      return res.status(400).send({status: false,msg: "Invalid request, Please provide blog details",
+        return res.status(400).send({status: false,msg: "Invalid request, Please provide blog details",
       });
     }
     
@@ -18,7 +19,11 @@ const createBlog = async function (req, res) {
       let validationAuthorId = await authorModel.findById(authorId);
       if (!validationAuthorId) return res.send({ msg: "Enter Valid Author ID" });
 
-      const { title, body, tags, category, subcategory } = data;
+      const title = req.body.title;
+      const body = req.body.body;
+      const tags = req.body.tags;
+      const category = req.body.category;
+      const subcategory = req.body.subcategory;
 
       if (!title) { return res.status(400).send({ status: false, msg: "Title is required" }) }
       if (!body) { return res.status(400).send({ status: false, msg: "Body is required" }) }
@@ -28,12 +33,8 @@ const createBlog = async function (req, res) {
 
       let blogCreated = await blogModel.create(data);
       res.status(201).send({ data: blogCreated });
-  } catch (err) {
-    res.status(500).send({ msg: "server error", error: err.message });
-  }
+  } catch (err) {res.status(500).send({ msg: "server error", error: err.message })}
 };
-
-
 
 //============GET/blogs===========
 
@@ -44,29 +45,32 @@ const GetFilteredBlog = async function (req, res) {
     let subcat = req.query.subcategory;
     let tag = req.query.tags;
 
-    if(authId||cat||subcat||tag)
+    if(authId&&cat&&subcat&&tag)
     {
   
+      
     let allData = await blogModel.find({
-      $or: [
+      $and: [
         { authorId: authId },
         { category: cat },
         { subcategory: subcat },
         { tags: tag }, { isDeleted: false }, { isPublished: true }
       ],
-    });
+    }).populate("authorId");
     if (allData.length == 0)
       return res.status(404).send({ msg: "enter valid queries" });
     // console.log(allData);
 
-    res.status(200).send({ status: true, msg: allData });
-  }
+    
+    res.status(200).send({ status: true, msg: allData });}
+    
+  
   else{
-    res.status(400).send({msg:"at least one query is required for filtering data "})
+    res.status(400).send({msg:"all query requirement not fullfilled "})
   }
 
   } catch (err) {
-    res.status(500).send({ status: false, msg: "Error", err: err.message });
+    res.status(500).send({ status: false, msg: "server Error", err: err.message });
   }
 };
 
@@ -75,14 +79,18 @@ const GetFilteredBlog = async function (req, res) {
 //=============== PUT/blogs/:blogId===========
 
 const updateBlog = async function (req, res) {
+ 
+ 
+ 
   try {
+
     const blogId = req.params.blogId;
     if (!blogId) {
       return res.status(404).send({ status: false, msg: "No Blog Found" });
     }
 
-    
   
+    
     const title = req.body.title;
     const body = req.body.body;
     const tag = req.body.tags;
@@ -117,7 +125,7 @@ const updateBlog = async function (req, res) {
       .send({ status: true, msg: "Updated successfully", data: updatedBlog });
     }
       else{
-        res.status(400).send({msg:"at least one query is required for upadating data "})
+        res.status(400).send({msg:"data is required in body "})
       }
   } catch (err) {
     res.status(500).send({ status: false, msg: "Error", err: err.message });
@@ -134,6 +142,10 @@ const DeleteBlogById = async function (req, res) {
         .status(404)
         .send({ status: false, msg: "Blog Id is needed in path params" });
     }
+
+    
+
+  if(!isValid(blogId)) return res.status(404).send({ status: false, msg: "BlogID invalid" });
 
     let DeletedBlog = await blogModel.findOneAndUpdate(
       { _id: blogId },
