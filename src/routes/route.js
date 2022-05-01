@@ -6,7 +6,6 @@ const authentication = require("../middlewares/authentication")
 const authorisation = require("../middlewares/authorisation")
 
 
-
 router.post("/createAuthor",authorController.createAuthor)
 
 router.post("/createBlog",blogController.createBlog)
