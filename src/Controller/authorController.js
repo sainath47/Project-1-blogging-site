@@ -21,22 +21,20 @@ const createAuthor= async function (req, res) {
     const email = req.body.email;
     const password = req.body.password;
 
-
-   
     //Params Validation
-    if (!fname){return res.status(400).send({ status: false, msg: "Firstname is required" })}
-    if (!lname){return res.status(400).send({ status: false, msg: "Lastname is required" })}
-    if (!title){return res.status(400).send({ status: false, msg: "Title is required" })}
-    if (!email){return res.status(400).send({ status: false, msg: "Email is required" })}
-    if (!password){return res.status(400).send({ status: false, msg: "Password is required" })}
+    if (!fname) return res.status(400).send({ status: false, msg: "Firstname is required" })
+    if (!lname) return res.status(400).send({ status: false, msg: "Lastname is required" })
+    if (!title) return res.status(400).send({ status: false, msg: "Title is required" })
+    if (!email) return res.status(400).send({ status: false, msg: "Email is required" })
+    if (!password) return res.status(400).send({ status: false, msg: "Password is required" })
 
+    //To check Email Exist or not
     let emailID= await authorModel.findOne({email})
-    if(emailID) return res.status(400).send({msg:"account already present with this EmailID"})
+    if(emailID) return res.status(400).send({msg:"Account already Present with this EmailID"})
 
 
     //Email format Validation
-    const validate = function(v){ return /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/.test(v);
-    }
+    const validate = function(v){ return /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/.test(v)}
     if(!validate(email)) return res.status(400).send({ status: false, msg: "email is not valid" })
 
     //Author creation
@@ -48,21 +46,21 @@ res.status(500).send({ msg: "server error", error: err.message });
 }
 }
 
-
+// Author Login
 const loginAuthor = async function (req, res) {
   try{
+    
+    //Param validation
     let email = req.body.email;
-    if(!email) return
+    if(!email) return res.status(400).send({ status: false, msg: "Email is required" })
     let password = req.body.password;
-    if(!password) return
+    if(!password) return res.status(400).send({ status: false, msg: "Password is required" })
   
+    //Checking correct Input
     let author = await AuthorModel.findOne({ email: email, password: password });
-    if (!author)
-          return res.status(400).send({
-            status: false,
-            msg: "email or the password is not corerct",
-          });
+    if (!author) return res.status(400).send({status: false,msg: "Email or the Password is not Corerct"});
 
+    //Token Generation
     let token = jwt.sign(
       {
         authorId: author._id.toString(),
@@ -71,8 +69,10 @@ const loginAuthor = async function (req, res) {
       },
       "RSPtechnologies-brillientCoders"
     );
+    
+    //Sending token through Header
     res.header("x-Api-Key", token);
-        res.status(200).send({ status: true, data: token });
+    res.status(200).send({ status: true, data: token });
       
     }
     catch (err) {
