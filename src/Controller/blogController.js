@@ -45,12 +45,12 @@ const GetFilteredBlog = async function (req, res) {
     let subcat = req.query.subcategory;
     let tag = req.query.tags;
 
-    if(authId&&cat&&subcat&&tag)
+    if(authId||cat||subcat||tag)
     {
   
       
     let allData = await blogModel.find({
-      $and: [
+      $or: [
         { authorId: authId },
         { category: cat },
         { subcategory: subcat },
@@ -85,6 +85,7 @@ const updateBlog = async function (req, res) {
   try {
 
     const blogId = req.params.blogId;
+
     if (!blogId) {
       return res.status(404).send({ status: false, msg: "No Blog Found" });
     }
@@ -137,11 +138,14 @@ const updateBlog = async function (req, res) {
 const DeleteBlogById = async function (req, res) {
   try {
     const blogId = req.params.blogId;
+    // console.log(blogId)
     if (!blogId) {
       return res
         .status(404)
         .send({ status: false, msg: "Blog Id is needed in path params" });
     }
+
+
 
     
 
