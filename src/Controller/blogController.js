@@ -5,10 +5,10 @@ const isValid = mongoose.Types.ObjectId.isValid
 
 
 
-//Create Blog
+//*Create Blog
 const createBlog = async function (req, res) {
   try {
-    //Empty Body Validation
+    //*Empty Body Validation
     const data = req.body
     if(Object.keys(data).length == 0){
         return res.status(400).send({status: false,msg: "Invalid request, Please provide blog details",
@@ -20,14 +20,14 @@ const createBlog = async function (req, res) {
       let validationAuthorId = await authorModel.findById(authorId);
       if (!validationAuthorId) return res.send({ msg: "Enter Valid Author ID" });
 
-    //Extracts Param
+    //*Extracts Param
       const title = req.body.title;
       const body = req.body.body;
       const tags = req.body.tags;
       const category = req.body.category;
       const subcategory = req.body.subcategory;
 
-    //Params Validation
+    //*Params Validation
       if (!title)  return res.status(400).send({ status: false, msg: "Title is required" }) 
       if (!body)   return res.status(400).send({ status: false, msg: "Body is required" }) 
       if (!tags)   return res.status(400).send({ status: false, msg: "Tags is required" }) 
@@ -39,7 +39,7 @@ const createBlog = async function (req, res) {
   } catch (err) {res.status(500).send({ msg: "server error", error: err.message })}
 };
 
-//Get Filtered Blog
+//*Get Filtered Blog
 
 const GetFilteredBlog = async function (req, res) {
   try {
@@ -60,6 +60,8 @@ const GetFilteredBlog = async function (req, res) {
       ],
     }).populate("authorId");
 
+//*Validation
+
     if (allData.length == 0) return res.status(404).send({ msg: "Enter valid Details" });
     res.status(200).send({ status: true, msg: allData });}
   else {res.status(400).send({msg:"All Details requirement not Fullfilled "})}
@@ -70,7 +72,7 @@ const GetFilteredBlog = async function (req, res) {
 
 
 
-//Update Blog
+//*Update Blog
 
 const updateBlog = async function (req, res) {
   try {
@@ -100,7 +102,7 @@ const updateBlog = async function (req, res) {
       },
       { new: true }
     );
-
+//*Validation
     if (!updatedBlog) return res.status(400).send({ msg: "enter valid queries" });
     res.status(200).send({ status: true, msg: "Updated successfully", data: updatedBlog });
     }
@@ -109,7 +111,7 @@ const updateBlog = async function (req, res) {
   catch (err) {res.status(500).send({ status: false, msg: "Error", err: err.message })}
 };
 
-//Delete-Blog-By-Id
+//*Delete-Blog-By-Id
 
 const DeleteBlogById = async function (req, res) {
   try {
@@ -132,7 +134,7 @@ const DeleteBlogById = async function (req, res) {
 };
 
 
-//Delete-Blog-By-Queryparams
+//*Delete-Blog-By-Queryparams
 
 const DeleteBlogByQuery = async function (req, res) {
   try {
@@ -157,6 +159,7 @@ const DeleteBlogByQuery = async function (req, res) {
       { isDeleted: true, deletedAt: new Date() },
       { new: true }
     ); 
+ //*Validation   
     if (!deletedBlogs) return res.status(404).send({ msg: "enter valid queries" });
     }
     else{ res.status(400).send({msg:"at least one query is required for upadating data "})}

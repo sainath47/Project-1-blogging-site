@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose")
 
+//*--------AUTHOR MODEL----------------
 const authorSchema = new mongoose.Schema(
     {
         fname: {

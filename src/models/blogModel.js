@@ -1,6 +1,8 @@
 const { default: mongoose } = require("mongoose")
 const ObjectId = mongoose.Schema.Types.ObjectId
 
+//*----------BLOG MODEL--------------
+
 const blogSchema = new mongoose.Schema(
 {
         title: {
