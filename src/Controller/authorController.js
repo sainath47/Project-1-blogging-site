@@ -78,7 +78,7 @@ const loginAuthor = async function (req, res) {
     
     //*Sending token through Header
     res.header("x-Api-Key", token);
-    res.status(200).send({ status: true, data: token ,msg: "Login Sucee"});
+    res.status(200).send({ status: true, data: token ,msg: "Login Successfully"});
       
     }
     catch (err) {

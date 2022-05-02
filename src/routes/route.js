@@ -14,7 +14,7 @@ router.post("/createBlog",blogController.createBlog)
 
 router.get("/blogs/get",blogController.GetFilteredBlog)
 
-router.put("/blog/:blogId/:authorId",authentication.authentication,blogController.updateBlog)
+router.put("/blog/:blogId/:authorId",authentication.authentication,authorisation.authorisation,blogController.updateBlog)
 
 router.delete("/blogs/delete/:authorId",authentication.authentication,authorisation.authorisation,blogController.DeleteBlogByQuery)
 
