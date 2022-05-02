@@ -44,26 +44,26 @@ const createBlog = async function (req, res) {
 const GetFilteredBlog = async function (req, res) {
   try {
 
+    
+
     let authId = req.query.authorId;
     let cat = req.query.category;
     let subcat = req.query.subcategory;
     let tag = req.query.tags;
 
-    if(authId ||  cat || subcat || tag)
-    {
-    let allData = await blogModel.find({
+  
+    let allData = await blogModel.find({ isDeleted: false , isPublished: true ,
       $or: [
         { authorId: authId },
         { category: cat },
         { subcategory: subcat },
-        { tags: tag }, { isDeleted: false }, { isPublished: true }
+        { tags: tag }, 
       ],
     }).populate("authorId");
 
     if (allData.length == 0) return res.status(404).send({ msg: "Enter valid Details" });
     res.status(200).send({ status: true, msg: allData });}
-  else {res.status(400).send({msg:"All Details requirement not Fullfilled "})}
-  } 
+  
   catch (err) {res.status(500).send({ status: false, msg: "server Error", err: err.message });
   }
 };
