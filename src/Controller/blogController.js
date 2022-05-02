@@ -82,6 +82,7 @@ const updateBlog = async function (req, res) {
     if (!blogId) return res.status(404).send({ status: false, msg: "No Blog Found" })
     if(!isValid(blogId)) return res.status(404).send({ status: false, msg: "BlogID invalid" });
 
+//*Extracts Param
     const title = req.body.title;
     const body = req.body.body;
     const tag = req.body.tags;
@@ -126,6 +127,8 @@ const DeleteBlogById = async function (req, res) {
       { new: true }
     );
 
+    //*Validation
+
     if (!DeletedBlog) return res.status(404).send({ msg: "blog not found" });
     res.status(200).send({ status: true, msg: DeletedBlog });
   } 
@@ -138,7 +141,7 @@ const DeleteBlogById = async function (req, res) {
 
 const DeleteBlogByQuery = async function (req, res) {
   try {
-
+//*Extracts Query
     let authId = req.query.authorId;
     let cat = req.query.category;
     let subcat = req.query.subcategory;
