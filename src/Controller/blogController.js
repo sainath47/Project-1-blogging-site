@@ -52,7 +52,7 @@ const GetFilteredBlog = async function (req, res) {
     if(authId ||  cat || subcat || tag)
     {
     let allData = await blogModel.find({
-      $or: [
+      $and: [
         { authorId: authId },
         { category: cat },
         { subcategory: subcat },
