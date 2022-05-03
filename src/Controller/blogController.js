@@ -4,6 +4,7 @@ const blogModel = require("../models/blogModel");
 const isValid = mongoose.Types.ObjectId.isValid
 
 
+
 //*Create Blog
 const createBlog = async function (req, res) {
   try {
@@ -103,12 +104,12 @@ const updateBlog = async function (req, res) {
       { new: true }
     );
 //*Validation
-    if (!updatedBlog) return res.status(400).send({ msg: "enter valid queries" });
+    if (!updatedBlog) return res.status(404).send({ msg: "Blog not found" });
     res.status(200).send({ status: true, msg: "Updated successfully", data: updatedBlog });
     }
       else{ res.status(400).send({msg:"data is required in body "})}
   } 
-  catch (err) {res.status(500).send({ status: false, msg: "Error", err: err.message })}
+  catch (err) {res.status(500).send({ status: false, msg: "server Error", err: err.message })}
 };
 
 //*Delete-Blog-By-Id
@@ -146,8 +147,7 @@ const DeleteBlogByQuery = async function (req, res) {
     let subcat = req.query.subcategory;
     let tag = req.query.tags;
 
-    if(cat || subcat || tag || body)
-    {
+   
 
     let deletedBlogs = await blogModel.findOneAndUpdate(
       {
@@ -163,8 +163,6 @@ const DeleteBlogByQuery = async function (req, res) {
     ); 
  //*Validation   
     if (!deletedBlogs) return res.status(404).send({ msg: "enter valid queries" });
-    }
-    else{ res.status(400).send({msg:"at least one query is required for upadating data "})}
     res.status(200).send({ status: true, msg: deletedBlogs });
   } 
   catch (err) {res.status(500).send({ status: false, msg: "Error", err: err.message });
