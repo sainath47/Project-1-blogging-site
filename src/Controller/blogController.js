@@ -114,7 +114,7 @@ const updateBlog = async function (req, res) {
     if (!isValid(blogId))
       return res.status(404).send({ status: false, msg: "BlogID invalid" });
 
-    const blogFound = await blogModel.findOne(blogId);
+    const blogFound = await blogModel.findOne({blogId});
     if (blogFound.isDeleted === true) {
       return res.status(404).send({ Status: "false", msg: "blog is deleted " });
     }
